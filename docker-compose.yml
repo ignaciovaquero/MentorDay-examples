@@ -1,0 +1,34 @@
+version: '2'
+
+# Abstracción 1: Servicios
+services:
+  wordpress:
+    image: wordpress:4.6.1-apache
+    depends_on:
+      - db
+    ports:
+      - "8000:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_PASSWORD: wordpress
+    networks:
+      - wordpress
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - data:/var/lib/mysql
+    networks:
+      - wordpress
+
+# Abstracción 2: Volúmenes
+volumes:
+  data:
+
+# Abstracción 3: Redes
+networks:
+  wordpress:
